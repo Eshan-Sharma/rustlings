@@ -76,7 +76,22 @@ impl TryFrom<[i16; 3]> for Color {
 // Slice implementation
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
-    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {}
+    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        if slice[0] < 0
+            || slice[0] > 255
+            || slice[1] < 0
+            || slice[1] > 255
+            || slice[2] < 0
+            || slice[2] > 255
+        {
+            return Err(IntoColorError::IntConversion);
+        }
+        Ok(Color {
+            red: slice[0],
+            green: slice[1],
+            blue: slice[2],
+        })
+    }
 }
 
 fn main() {
